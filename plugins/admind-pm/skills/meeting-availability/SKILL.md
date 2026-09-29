@@ -7,6 +7,8 @@ description: Finds suitable meeting times by checking Outlook calendar availabil
 
 This skill is **read-only** by default. Do not create or send a calendar invitation unless the user explicitly asks you to schedule the meeting.
 
+Read calendars only through the Microsoft 365 connector — never by opening Outlook in a browser.
+
 ## Steps
 
 1. **Identify the participants.**
@@ -32,7 +34,22 @@ This skill is **read-only** by default. Do not create or send a calendar invitat
    - Time zone, when participants are in different zones
    - Whether each person is free or tentative in that slot
 
-6. **Stop.** Only book the meeting if the user explicitly asks. If they do, confirm title, attendees and slot once before creating the invite.
+6. **Stop.** Only book the meeting if the user explicitly asks. If they do, confirm title, attendees and slot once, then follow "Booking the meeting" below.
+
+## Booking the meeting
+
+**Never open Outlook in a browser** (Outlook Web, browser automation, or computer use) to book. Use only the Microsoft 365 connector.
+
+1. **If the Microsoft 365 connector has a tool to create calendar events**, use it to create the event with the confirmed title, attendees, time and time zone. Add a Teams link if the tool supports it. Report back with the event details.
+2. **If it doesn't** (the connector is read-only for calendars in this workspace, or the call is refused), don't look for another way to write to Outlook. Instead, give the user a one-click Outlook link that opens a pre-filled new meeting:
+
+   ```
+   https://outlook.office.com/calendar/deeplink/compose?path=/calendar/action/compose&subject=<title>&startdt=<start>&enddt=<end>&to=<email1>,<email2>&body=<agenda>
+   ```
+
+   - URL-encode every value.
+   - Use ISO 8601 date-times with the time-zone offset, e.g. `2026-10-01T10:00:00+02:00`.
+   - Tell the user: *"Click the link, check the details, and press Send in Outlook."*
 
 ## Notes
 

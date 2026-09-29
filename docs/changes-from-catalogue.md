@@ -24,6 +24,7 @@ The skill instructions come from the *Admind AI Skills & Scheduled Tasks Catalog
 - Always includes the user. Resolves ambiguous names by asking.
 - Works within working hours (09:00–17:00, Mon–Fri) and never proposes past slots.
 - Tentative participants can be offered, clearly labelled. The original excluded them entirely while also asking to show "tentative" in the output, which was contradictory.
+- **Booking uses the Microsoft 365 connector only — never Outlook in a browser.** If the connector can't create events in this workspace, the skill gives a one-click Outlook link that opens a pre-filled new meeting. (v1.0.1, after pilot feedback: Claude was opening Outlook Web in the browser to book.)
 
 ## meeting-actions
 
@@ -37,6 +38,7 @@ The skill instructions come from the *Admind AI Skills & Scheduled Tasks Catalog
 - Attachments go to `01_Client`, matching the `project-intake` folder structure.
 - Saving attachments also waits for confirmation.
 - The reply never commits to dates, budget or scope the team hasn't agreed.
+- Outlook drafts are created only through the Microsoft 365 connector, never in a browser (v1.0.1).
 
 ## client-comms-outbound
 
