@@ -1,0 +1,12 @@
+{
+  "name": "admind",
+  "owner": { "name": "Admind Client Service" },
+  "description": "Admind's Claude plugins for Client Service and project management.",
+  "plugins": [
+    {
+      "name": "admind-pm",
+      "source": "./plugins/admind-pm",
+      "description": "Skills for Admind Project Managers: project intake, pre-call briefing, meeting availability, meeting notes to Scoro, client communications, and Outlook to Scoro calendar sync."
+    }
+  ]
+}
