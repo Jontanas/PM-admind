@@ -5,7 +5,7 @@ description: Handles outbound client communications based on internal Scoro upda
 
 # Client Communications — Outbound
 
-This skill **drafts only**. Never send the email. Only create an Outlook draft if the user explicitly asks.
+This skill **drafts only**. Never send the email. Only create an Outlook draft if the user explicitly asks. Do that only through the Microsoft 365 connector; if it has no tool for drafts, give the user the text to copy. Never open Outlook in a browser.
 
 ## Steps
 

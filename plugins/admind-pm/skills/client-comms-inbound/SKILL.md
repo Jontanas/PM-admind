@@ -40,4 +40,4 @@ Nothing is posted to Scoro and no email is sent until the user explicitly confir
 
    > *"Reply ✅ to save the attachments and post the Scoro comment, or tell me what to change. The email reply is a draft — I won't send it unless you ask me to."*
 
-8. **On confirmation:** save the attachments, post the comment with the final Drive links, and report what was done with links. Only send or create an Outlook draft of the reply if the user explicitly asks.
+8. **On confirmation:** save the attachments, post the comment with the final Drive links, and report what was done with links. Only send or create an Outlook draft of the reply if the user explicitly asks. Do that only through the Microsoft 365 connector; if it has no tool for drafts or sending, give the user the final text to copy. Never open Outlook in a browser.

@@ -15,6 +15,8 @@ Enable these for the organisation:
 | Google Drive | From the connector directory | |
 | Slack | From the connector directory | Needed by `pre-call-briefing`, `meeting-actions` and the `calendar-sync` DMs. |
 
+**Calendar writes (optional).** By default the Microsoft 365 connector may only read calendars. To let `meeting-availability` create the meeting directly, allow calendar write actions for the Microsoft 365 connector in **Organization settings → Connectors → Microsoft 365**. Your Entra admin may need to grant consent again for the added permission. Without this, the skill gives PMs a one-click Outlook link to a pre-filled meeting instead.
+
 Never collect PMs' passwords or API tokens centrally. Each person authorises their own access through OAuth.
 
 ## 2. Plugin (so PMs get the skills without copy and paste)
