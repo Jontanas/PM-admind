@@ -1,6 +1,6 @@
 ---
 name: meeting-availability
-description: Finds suitable meeting times by checking Outlook calendar availability for people named by the user or the participants of an email thread, and proposes a short list of free slots. When asked to book, creates the meeting in Scoro linked to the project, with activity type and billability, after the user confirms; Scoro syncs it to Outlook. Never books without an explicit request. Use when the user wants to schedule a meeting, find mutual availability, or propose time slots, e.g. "find a time for me, Anna and Piotr next week", "when are we all free for an hour?".
+description: Finds suitable meeting times by checking Outlook calendar availability for people named by the user or the participants of an email thread, and proposes a short list of free slots. When asked to book, sends the invite from Outlook (with a Teams link, clients included) and links it in Scoro to the project, with activity type and billability, after the user confirms. Never books without an explicit request. Use when the user wants to schedule a meeting, find mutual availability, or propose time slots, e.g. "find a time for me, Anna and Piotr next week", "when are we all free for an hour?".
 ---
 
 # Meeting Availability
@@ -36,11 +36,11 @@ Read calendars only through the Microsoft 365 connector — never by opening Out
 
 6. **Stop.** Only book the meeting if the user explicitly asks. If they do, follow "Booking the meeting" below.
 
-## Booking the meeting — in Scoro
+## Booking the meeting — Outlook first, then Scoro
 
-Meetings are created **in Scoro**, not in Outlook. Scoro then syncs the meeting to the participants' Outlook calendars. A Scoro meeting linked to the right project lets internal participants log their time on it, and it shows as a time slot in the Scoro Planner.
+The meeting is created **in Outlook first**, so it gets a **Teams link** and **clients can be invited** (Scoro can do neither). Then it is **linked in Scoro** to the project, so internal participants can log time on it and it shows as a time slot in the Scoro Planner.
 
-**Never open Outlook or Scoro in a browser** (web app, browser automation, or computer use). Use only the Scoro connector.
+**Never open Outlook or Scoro in a browser** (web app, browser automation, or computer use). Use only the Microsoft 365 and Scoro connectors.
 
 ### 1. Work out the Scoro fields
 
@@ -54,7 +54,7 @@ Meetings are created **in Scoro**, not in Outlook. Scoro then syncs the meeting 
   - **Internal** → `non_billable`
   - **One-off** or **Retainer** → `billable`
   - Any other project type → ask the user.
-- **Participants** — the **internal** participants (`@admindagency.com`) mapped to their Scoro users. If an internal person has no Scoro user, say so; they won't be in the Scoro meeting.
+- **Participants** — everyone goes on the Outlook invite. In Scoro, only the **internal** participants (`@admindagency.com`) mapped to their Scoro users. If an internal person has no Scoro user, say so.
 - **Title, start, end** — from the chosen slot, with the time zone.
 
 ### 2. Confirm everything once
@@ -64,6 +64,7 @@ Show one summary and wait for an explicit OK:
 ```
 📅 [Title]
 🕐 [Day, date] [start]–[end] [time zone]
+💻 Teams meeting: yes
 📁 Project: [Project name] ([project type])
 🏷️ Activity type: [activity type]
 💰 Billable: [yes / no] (from the project type)
@@ -71,33 +72,45 @@ Show one summary and wait for an explicit OK:
 🌐 External: [names/emails, or "none"]
 ```
 
-> *"Reply ✅ to create this meeting in Scoro, or tell me what to change (project, activity type, time, people)."*
+> *"Reply ✅ to send the invite from Outlook and link it in Scoro, or tell me what to change."*
 
-### 3. Create it in Scoro
+### 3. Create the meeting in Outlook
 
-On confirmation, create the calendar event with the Scoro connector:
-- name, start and end (ISO 8601 with time zone)
-- project ID, activity type ID, billable time type
-- the internal participants' Scoro user IDs (including the user, if attending)
-- a description with the agenda, if there is one
+On confirmation, create the event in the user's Outlook calendar with the Microsoft 365 connector:
+- title, start and end with the time zone, agenda in the body
+- **all** participants as attendees, internal and external, so they receive the invite
+- **a Teams online meeting**, if the create tool has that option
 
-Report back with the event and its project. Don't create the event twice. If creation fails, show the error and don't retry with different fields without asking.
+Then **read the event back** and check:
+- **Teams link present?** If not, tell the user: *"The invite went out without a Teams link. Open the meeting in Outlook, switch on **Teams meeting**, and click **Send update**."*
+- **All attendees on the invite?** If anyone is missing, say who.
 
-### 4. External attendees
+Don't create the event twice. If creation fails, show the error and don't retry with different fields without asking.
 
-A Scoro calendar event only takes Scoro users, so clients and other external people **can't be invited from Scoro**. If there are external attendees, tell the user after creating the event:
-
-> *"Scoro will sync the meeting to Outlook for the internal team. Clients aren't Scoro users, so please add [emails] to the meeting in Outlook once it appears there."*
-
-### If Scoro isn't available
-
-If the Scoro connector isn't connected or can't create events, say so. As a last resort, offer a one-click Outlook link to a pre-filled meeting, and warn that it **won't be linked to the Scoro project**, so time can't be logged on it:
+**If the connector can't create events or can't add attendees**, don't create anything. Give the user a one-click Outlook link to a pre-filled meeting:
 
 ```
 https://outlook.office.com/calendar/deeplink/compose?path=/calendar/action/compose&subject=<title>&startdt=<start>&enddt=<end>&to=<email1>,<email2>&body=<agenda>
 ```
 
-URL-encode every value and use ISO 8601 date-times with the time-zone offset, e.g. `2026-10-01T10:00:00+02:00`.
+URL-encode every value and use ISO 8601 date-times with the time-zone offset, e.g. `2026-10-01T10:00:00+02:00`. Tell the user: *"Check that **Teams meeting** is on, click **Send**, then tell me 'sent' so I can link it in Scoro."* When they say so, find the event in their Outlook calendar and continue with step 4.
+
+### 4. Link it in Scoro — without creating a duplicate
+
+Some PMs have Scoro's own Outlook calendar sync (MS Exchange integration) switched on; others don't. With it on, the Outlook meeting also appears in Scoro by itself, and a second event must not be created.
+
+1. **Look for the synced copy.** Search the user's Scoro calendar for an event with the same title and the same start time.
+   - **Found** → **update** that event: project, activity type, billable, internal participants, and add the marker line `[outlook-id: <Outlook event ID>]` at the end of the description. Done.
+2. **Not found** → ask once: *"Is Scoro's Outlook calendar sync switched on for you? If you're not sure, say so."*
+   - **Yes** → the copy may take a few minutes to appear. Say: *"I'll link it once it shows up in Scoro. Tell me 'link it' in a few minutes."* Then repeat step 4.1. If it still isn't there after a second check, offer to create it in Scoro instead.
+   - **No** → **create** the event in Scoro with the Scoro connector: name, start and end, project ID, activity type ID, billable time type, the internal participants' Scoro user IDs, and a description ending with `[outlook-id: <Outlook event ID>]`.
+   - **Not sure** → don't create anything. Suggest they check the MS Exchange calendar integration in their Scoro settings. Until then, the next `calendar-sync` run will link the meeting.
+
+Use the Outlook event's `iCalUId` as the Outlook event ID (or its `id` if `iCalUId` isn't available). The marker lets `calendar-sync` recognise the meeting later instead of copying it again.
+
+### 5. Report back
+
+One short confirmation: the Outlook invite (with or without a Teams link), who was invited, and the Scoro event with its project, activity type and billable status.
 
 ## Notes
 

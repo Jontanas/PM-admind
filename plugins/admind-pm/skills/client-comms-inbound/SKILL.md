@@ -34,7 +34,7 @@ Nothing is posted to Scoro and no email is sent until the user explicitly confir
 
    Use a friendly internal tone. Omit empty sections.
 
-6. **Draft a reply email** to the client in a professional, warm tone. Acknowledge what they sent, confirm next steps and timing only where known, and never commit to dates, budget, or scope that the team has not agreed. Sign off with the user's name from the signed-in account.
+6. **Draft a reply email** to the client in a professional, warm tone. Acknowledge what they sent, confirm next steps and timing only where known, and never commit to dates, budget, or scope that the team has not agreed. Never put a Google Drive link in the reply — Admind's Drive is internal only (SharePoint links are fine). The Drive links belong in the internal Scoro comment only. Sign off with the user's name from the signed-in account.
 
 7. **Present everything for approval:** the summary, the attachment plan, the Scoro comment, and the reply draft. Then ask:
 

@@ -15,7 +15,7 @@ Enable these for the organisation:
 | Google Drive | From the connector directory | |
 | Slack | From the connector directory | Needed by `pre-call-briefing`, `meeting-actions` and the `calendar-sync` DMs. |
 
-**Calendar writes (optional).** `meeting-availability` creates meetings in **Scoro**, which syncs them to Outlook, so it doesn't need Microsoft 365 calendar writes. Microsoft 365 write actions are only needed if you want Claude to create Outlook email drafts. To allow them, go to **Organization settings → Connectors → Microsoft 365 → Tool permission restrictions**. Your Entra admin must then grant consent for the added permissions (Enterprise applications → "M365 MCP Server for Claude" → Permissions → Grant admin consent), and each PM reconnects Microsoft 365.
+**Microsoft 365 write actions.** `meeting-availability` sends meeting invites from Outlook (with a Teams link), and the client-comms skills create email drafts, so allow calendar and draft write actions in **Organization settings → Connectors → Microsoft 365 → Tool permission restrictions**. Your Entra admin must grant consent for the added permissions once (Enterprise applications → "M365 MCP Server for Claude" → Permissions → Grant admin consent), and each PM reconnects Microsoft 365. Without write actions, `meeting-availability` falls back to a pre-filled Outlook link.
 
 Never collect PMs' passwords or API tokens centrally. Each person authorises their own access through OAuth.
 
