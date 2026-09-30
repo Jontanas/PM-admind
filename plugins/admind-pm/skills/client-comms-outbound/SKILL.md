@@ -56,6 +56,20 @@ This skill **drafts only**. Never send the email. Only create an Outlook draft i
 
    Write in the language the client uses in their recent emails (default: English). Keep it short and warm.
 
-   **Sharing a Drive file with the client.** Files can't be attached through the connectors, so the email refers to the file by name and, if the user wants, includes its Drive link. Before adding a link, check the file's sharing settings with the Google Drive connector. If the client can't open it (shared only inside Admind), don't add the link silently — tell the user and suggest they share the file with the client first, or attach it themselves in Outlook.
+   **Files for the client — attach or link?** Claude can't attach files to emails: the Microsoft 365 connector doesn't support attachments. If the update includes files meant for the client, ask the user once, for all files together:
 
-6. **Present the draft** together with a one-line note of anything you deliberately left out as internal, so the user can check it. Apply edits until they are happy.
+   > *"How should the client get [file names] — attached by you in Outlook, or as a Google Drive link in the email?"*
+
+   Suggest **link** for videos and large files (over ~20 MB), which often exceed email size limits.
+
+   - **Attach:** in the email body, add a marker where the file belongs, e.g. `[Attach: Homepage_v3.pdf]`, and refer to it as attached ("Please find the updated homepage design attached."). After the draft, list the files to attach, each with its Drive link so the user can download it quickly:
+
+     ```
+     📎 Attach before sending:
+     • Homepage_v3.pdf → [Drive link]
+     ```
+
+     Remind the user to remove the `[Attach: …]` markers once the files are attached.
+   - **Link:** before adding a Drive link, check the file's sharing settings with the Google Drive connector. If the client can't open it (shared only inside Admind), don't add the link silently. Tell the user and suggest they share the file with the client first, or switch to attaching it.
+
+6. **Present the draft** together with a one-line note of anything you deliberately left out as internal, so the user can check it, and the "📎 Attach before sending" list if there is one. Apply edits until they are happy.

@@ -46,7 +46,7 @@ The skill instructions come from the *Admind AI Skills & Scheduled Tasks Catalog
 - Sensitive but client-relevant items (delays, extra cost) are flagged to the PM, not silently dropped.
 - Adds a standard structure: update → what we need from you → next steps.
 - Writes in the client's language.
-- **Reads Google Drive files linked in the Scoro update through the Google Drive connector** (file ID taken from the link), never by opening the link as a web page. Before putting a Drive link in the email, checks the client can open it. (v1.0.2, after pilot feedback: Claude said it couldn't download Drive files.)
+- **Reads Google Drive files linked in the Scoro update through the Google Drive connector** (file ID taken from the link), never by opening the link as a web page. Asks whether client files should be attached by the PM (Claude can't attach files: the Microsoft 365 connector doesn't support attachments) or sent as a Drive link. For attachments, it marks where each file goes and lists the files with their Drive links. For links, it checks the client can open them first. (v1.0.2, after pilot feedback: Claude said it couldn't download Drive files.)
 
 ## calendar-sync (new — replaces the two sync prompts)
 
