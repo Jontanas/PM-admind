@@ -1,6 +1,6 @@
 ---
 name: client-comms-outbound
-description: Handles outbound client communications based on internal Scoro updates. Takes an internal Scoro comment, task update, or project information (including any Google Drive files linked in it, read through the Google Drive connector), picks out what the client needs to know and any actions required from them, and drafts a clear, warm, professional client email for approval. Draft only - never sends. Use when an internal update needs to go to the client, e.g. "turn this Scoro comment into a client email", "draft a client update for [project]".
+description: Handles outbound client communications based on internal Scoro updates. Takes an internal Scoro comment, task update, or project information (including any Google Drive files linked in it, found through the Google Drive connector), picks out what the client needs to know and any actions required from them, and drafts a clear, warm, professional client email for approval. Draft only - never sends. Use when an internal update needs to go to the client, e.g. "turn this Scoro comment into a client email", "draft a client update for [project]".
 ---
 
 # Client Communications — Outbound
@@ -11,18 +11,18 @@ This skill **drafts only**. Never send the email. Only create an Outlook draft i
 
 1. **Get the internal update.** Use what the user pasted, or read it from Scoro (the latest comments on the named project or task). If it is unclear which update to use, list the recent ones and ask.
 
-2. **Read any linked Google Drive files.** If the update contains Google Drive links (`drive.google.com`, `docs.google.com`), read each file through the **Google Drive connector** — the user's own Drive account is connected, so you have access to what they can open.
+2. **Identify any linked Google Drive files.** The email's content comes from the Scoro comment and the client conversation — **not** from the files. Don't read the files' contents unless the user asks you to. For each Google Drive link (`drive.google.com`, `docs.google.com`) in the update, only look up the file through the **Google Drive connector** — the user's own Drive account is connected:
    - **Never open or fetch the link as a web page** (web fetch, browser). Drive links need the user's sign-in, so that always fails. Always use the connector.
    - **Get the file ID from the link.** It is the long string after `/d/` or after `id=`:
      - `https://docs.google.com/document/d/<FILE_ID>/edit` (also `/spreadsheets/d/`, `/presentation/d/`)
      - `https://drive.google.com/file/d/<FILE_ID>/view`
      - `https://drive.google.com/open?id=<FILE_ID>`
-     - A folder link (`/drive/folders/<FOLDER_ID>`) is not a file: list the files in that folder with the connector and read the relevant ones.
-   - **Read the content** with the connector's "read file content" tool, passing the file ID. It handles Google Docs, Sheets and Slides, PDF, Word, Excel, PowerPoint and images. Use the metadata tool for the file name and type. Only if reading fails, use the connector's "download file content" tool.
-   - If a file still can't be read (no access, unsupported type), say which one and why in one line, and continue with the rest. Don't invent what the file contains.
-   - Use the file content to write a specific email: what was delivered, the key points or changes, and what the client needs to review or decide.
+     - A folder link (`/drive/folders/<FOLDER_ID>`) is not a file: list the files in it with the connector and ask the user which ones are for the client.
+   - **Get the file's name, type and size** with the connector's metadata tool. That's all the email and the attach/link choice in step 5 need.
+   - If a file can't be found (no access, deleted), say which link and why in one line, and continue.
+   - Only if the user asks (e.g. "summarise what's in the file"), read the content with the connector's "read file content" tool. Never guess what a file contains.
 
-3. **Identify the recipients** from the project's recent client email threads in Outlook, or ask the user.
+3. **Identify the recipients and read the conversation.** Find the project's recent client email thread in Outlook: take the recipients from it (or ask the user), and use it as context together with the Scoro comment, so the email continues the conversation.
 
 4. **Separate client-relevant content from internal content.** Never include in the client email:
    - internal budgets, rates, costs, margins, or hours logged
