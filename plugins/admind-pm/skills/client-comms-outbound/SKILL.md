@@ -1,6 +1,6 @@
 ---
 name: client-comms-outbound
-description: Handles outbound client communications based on internal Scoro updates. Takes an internal Scoro comment, task update, or project information (including any Google Drive files linked in it, found through the Google Drive connector), picks out what the client needs to know and any actions required from them, and drafts a clear, warm, professional client email for approval. Draft only - never sends. Use when an internal update needs to go to the client, e.g. "turn this Scoro comment into a client email", "draft a client update for [project]".
+description: Handles outbound client communications based on internal Scoro updates. Takes an internal Scoro comment, task update, or project information (including any Google Drive files linked in it, found through the Google Drive connector; Drive links are never sent to clients), picks out what the client needs to know and any actions required from them, and drafts a clear, warm, professional client email for approval. Draft only - never sends. Use when an internal update needs to go to the client, e.g. "turn this Scoro comment into a client email", "draft a client update for [project]".
 ---
 
 # Client Communications — Outbound
@@ -18,7 +18,7 @@ This skill **drafts only**. Never send the email. Only create an Outlook draft i
      - `https://drive.google.com/file/d/<FILE_ID>/view`
      - `https://drive.google.com/open?id=<FILE_ID>`
      - A folder link (`/drive/folders/<FOLDER_ID>`) is not a file: list the files in it with the connector and ask the user which ones are for the client.
-   - **Get the file's name, type and size** with the connector's metadata tool. That's all the email and the attach/link choice in step 5 need.
+   - **Get the file's name, type and size** with the connector's metadata tool. That's all the email and the attachment list in step 5 need.
    - If a file can't be found (no access, deleted), say which link and why in one line, and continue.
    - Only if the user asks (e.g. "summarise what's in the file"), read the content with the connector's "read file content" tool. Never guess what a file contains.
 
@@ -28,7 +28,8 @@ This skill **drafts only**. Never send the email. Only create an Outlook draft i
    - internal budgets, rates, costs, margins, or hours logged
    - internal team names, workload, or resourcing issues
    - blame, internal disagreements, or criticism of the client
-   - internal-only links (Scoro, internal Drive folders, Slack)
+   - **Google Drive links** (`drive.google.com`, `docs.google.com`) — Admind's Google Drive is internal only, so clients can't open them
+   - other internal-only links (Scoro, Slack)
    - anything the internal update marks as internal or confidential
 
    If the update contains something that looks client-relevant but sensitive (a delay, a scope change, extra cost), don't hide it and don't decide alone — flag it to the user and ask how to phrase it.
@@ -56,20 +57,18 @@ This skill **drafts only**. Never send the email. Only create an Outlook draft i
 
    Write in the language the client uses in their recent emails (default: English). Keep it short and warm.
 
-   **Files for the client — attach or link?** Claude can't attach files to emails: the Microsoft 365 connector doesn't support attachments. If the update includes files meant for the client, ask the user once, for all files together:
+   **Links the client can open.** **Never put a Google Drive link in a client email, and never suggest one.** SharePoint links can be included: if the update contains a SharePoint link (`sharepoint.com`) for the client, keep it in the email.
 
-   > *"How should the client get [file names] — attached by you in Outlook, or as a Google Drive link in the email?"*
-
-   Suggest **link** for videos and large files (over ~20 MB), which often exceed email size limits.
-
-   - **Attach:** in the email body, add a marker where the file belongs, e.g. `[Attach: Homepage_v3.pdf]`, and refer to it as attached ("Please find the updated homepage design attached."). After the draft, list the files to attach, each with its Drive link so the user can download it quickly:
+   **Files for the client from Google Drive — the user attaches them.** Claude can't attach files to emails (the Microsoft 365 connector doesn't support attachments). For each Google Drive file meant for the client:
+   - In the email body, add a marker where the file belongs, e.g. `[Attach: Homepage_v3.pdf]`, and refer to it as attached ("Please find the updated homepage design attached.").
+   - After the draft, list the files to attach. The Drive links in this list are **for the user only**, so they can download the files quickly:
 
      ```
-     📎 Attach before sending:
+     📎 Attach before sending (Drive links are for you — not for the client):
      • Homepage_v3.pdf → [Drive link]
      ```
 
-     Remind the user to remove the `[Attach: …]` markers once the files are attached.
-   - **Link:** before adding a Drive link, check the file's sharing settings with the Google Drive connector. If the client can't open it (shared only inside Admind), don't add the link silently. Tell the user and suggest they share the file with the client first, or switch to attaching it.
+   - Remind the user to remove the `[Attach: …]` markers once the files are attached.
+   - If a file is too large to attach (videos, or over ~20 MB), don't suggest a Drive link. Tell the user and suggest sharing it through SharePoint instead.
 
 6. **Present the draft** together with a one-line note of anything you deliberately left out as internal, so the user can check it, and the "📎 Attach before sending" list if there is one. Apply edits until they are happy.

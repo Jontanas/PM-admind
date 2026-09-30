@@ -30,7 +30,7 @@ The skill instructions come from the *Admind AI Skills & Scheduled Tasks Catalog
 
 - **Works in the Claude app and in Slack.** The original was written for Slack threads only.
 - "Latest meeting" means the latest meeting that has already ended.
-- Follow-up emails never include internal-only information.
+- Follow-up emails never include internal-only information or Google Drive links (v1.0.4).
 
 ## client-comms-inbound
 
@@ -46,7 +46,8 @@ The skill instructions come from the *Admind AI Skills & Scheduled Tasks Catalog
 - Sensitive but client-relevant items (delays, extra cost) are flagged to the PM, not silently dropped.
 - Adds a standard structure: update → what we need from you → next steps.
 - Writes in the client's language.
-- **Finds Google Drive files linked in the Scoro update through the Google Drive connector** (file ID taken from the link), never by opening the link as a web page. The email's content still comes from the Scoro comment and the client thread; files are only read if the PM asks. Asks whether client files should be attached by the PM (Claude can't attach files: the Microsoft 365 connector doesn't support attachments) or sent as a Drive link. For attachments, it marks where each file goes and lists the files with their Drive links. For links, it checks the client can open them first. (v1.0.2, after pilot feedback: Claude said it couldn't download Drive files.)
+- **Finds Google Drive files linked in the Scoro update through the Google Drive connector** (file ID taken from the link), never by opening the link as a web page. The email's content still comes from the Scoro comment and the client thread; files are only read if the PM asks. (v1.0.2)
+- **Never sends or suggests Google Drive links to clients** — Admind's Drive is internal only. Drive files for the client are attached by the PM: the draft marks where each goes and lists them with their Drive links for the PM only. SharePoint links can be sent. Files too large to attach are shared via SharePoint. (v1.0.4)
 
 ## calendar-sync (new — replaces the two sync prompts)
 

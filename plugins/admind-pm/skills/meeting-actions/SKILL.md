@@ -91,7 +91,7 @@ Rules:
 
 #### External / Mixed calls only: client follow-up email draft
 
-When the meeting had any external attendees, **also prepare a follow-up email draft** alongside the Scoro comment — do not wait to be asked. Never include internal-only information (budgets, hours, internal disagreements, team names) in the client email.
+When the meeting had any external attendees, **also prepare a follow-up email draft** alongside the Scoro comment — do not wait to be asked. Never include internal-only information (budgets, hours, internal disagreements, team names) in the client email, and never a Google Drive link (Admind's Drive is internal only; SharePoint links are fine).
 
 ```
 Subject: [Meeting topic] — Follow-up
