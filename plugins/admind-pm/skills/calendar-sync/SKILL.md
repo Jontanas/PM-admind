@@ -14,6 +14,15 @@ This one skill replaces the separate weekly and daily sync prompts from the cata
 - **RESOLVE** — the user wants to link events that a previous sync couldn't match (see the last section).
 - If the user runs it by hand without saying which, use DAILY and say so in one line.
 
+## Scoro's own Outlook sync
+
+Some PMs have Scoro's MS Exchange calendar integration switched on. It copies Outlook meetings into Scoro by itself, but without a project, activity type or billable status. If the prompt says **"my Scoro Outlook sync is on"**:
+
+- **Never create** events in Scoro. Only **link** the copies that Scoro's sync already made (Steps 4 and 5).
+- An Outlook event with no Scoro copy yet is skipped: Scoro's sync will bring it in, and the next run links it.
+
+Without that line, create missing events as usual. Either way, events that already exist in Scoro are linked, not duplicated.
+
 ## Unattended runs
 
 WEEKLY and DAILY normally run as scheduled tasks with nobody watching. In those runs:
@@ -66,13 +75,14 @@ Every Scoro event this skill creates carries a marker as the **last line of its 
 Match in this order:
 
 1. **By marker** — a Scoro event whose description contains `[outlook-id: <this event's ID>]`.
-2. **Legacy fallback** — no marker match, but a Scoro event with the same title (case-insensitive) on the same calendar day **and no marker at all**. This catches events created before the marker existed. Adopt it: add the marker to its description.
+2. **Fallback** — no marker match, but a Scoro event with the same title (case-insensitive) on the same calendar day **and no marker at all**. This catches events created before the marker existed and copies made by Scoro's own Outlook sync. Adopt it: add the marker to its description.
 
 Then:
 
 - **No match** → CREATE.
 - **Match, but start/end time or title differs** → UPDATE time and title only. Never create a second entry.
 - **Match, identical** → SKIP.
+- **Any match with no project link** → also LINK it: apply Step 5 to set the project, activity type and billable status (or add it to the unresolved list).
 
 Because matching uses the ID, renaming an event in Outlook updates the Scoro event instead of creating a duplicate.
 
@@ -114,6 +124,8 @@ On UPDATE, never change a project link that is already set (the user may have fi
 - Project/task, activity type, task type: from Step 5
 
 **UPDATE:** change start/end (and title if it changed in Outlook). Keep participants, project link and description unchanged, except for adding the marker if it was missing.
+
+**LINK** (a matched event with no project link): set project/task, activity type and billable status from Step 5. Leave everything else unchanged.
 
 ## Step 8 — Things this skill never does
 

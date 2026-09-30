@@ -35,7 +35,7 @@ Create two scheduled tasks (**Scheduled tasks → New task**), copying the promp
 - [`scheduled-tasks/calendar-sync-weekly.md`](../scheduled-tasks/calendar-sync-weekly.md) — Mondays 09:00
 - [`scheduled-tasks/calendar-sync-daily.md`](../scheduled-tasks/calendar-sync-daily.md) — weekdays 16:00
 
-Turn on the Microsoft 365, Scoro and Slack connectors for both tasks, and turn on **automatic approval**. There is nothing to personalise, because the skill works out who you are. Use **Run now** once and check the result in Scoro.
+Turn on the Microsoft 365, Scoro and Slack connectors for both tasks, and turn on **automatic approval**. There is nothing to personalise, because the skill works out who you are. The one exception: if Scoro's own Outlook calendar sync (MS Exchange integration) is on for you, add the sentence "My Scoro Outlook sync is on." to both prompts, so the task only links meetings instead of copying them again. Use **Run now** once and check the result in Scoro.
 
 When the sync can't tell which project an event belongs to, it sends you a Slack DM. Reply in Claude with, for example: "link my calendar events: 1 → Acme Website, 2 → no link".
 

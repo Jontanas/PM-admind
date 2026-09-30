@@ -24,7 +24,7 @@ The skill instructions come from the *Admind AI Skills & Scheduled Tasks Catalog
 - Always includes the user. Resolves ambiguous names by asking.
 - Works within working hours (09:00–17:00, Mon–Fri) and never proposes past slots.
 - Tentative participants can be offered, clearly labelled. The original excluded them entirely while also asking to show "tentative" in the output, which was contradictory.
-- **Booking creates the meeting in Scoro**, which syncs it to Outlook, so internal participants can log time on it and it shows in the Planner. Before creating, the PM confirms the **project** and **activity type** (suggested from the project type). Billability follows the project type: Internal → non-billable, One-off/Retainer → billable. External attendees are added in Outlook afterwards, since Scoro events only take Scoro users. Never books through a browser. (v1.0.3)
+- **Booking: Outlook first, then Scoro.** The invite is sent from Outlook through the Microsoft 365 connector, with a Teams link and clients invited (Scoro can do neither). Then the meeting is linked in Scoro to the project, so internal participants can log time on it and it shows in the Planner. Before sending, the PM confirms **project** and **activity type** (suggested from the project type). Billability follows the project type: Internal → non-billable, One-off/Retainer → billable. For PMs with Scoro's own Outlook sync, the synced copy is updated instead of creating a duplicate. If the connector can't create the invite, a pre-filled Outlook link is the fallback. Never books through a browser. (v1.0.5, replacing the Scoro-first flow of v1.0.3)
 
 ## meeting-actions
 
@@ -57,6 +57,7 @@ The skill instructions come from the *Admind AI Skills & Scheduled Tasks Catalog
 - **Replying to the DM works.** The original DM asked the PM to reply in Slack, but the scheduled run can't read replies. PMs now answer in Claude ("link my calendar events: 1 → …"), handled by the new RESOLVE mode.
 - **Never overwrites a project link set by hand, and never deletes events.** Events cancelled in Outlook are reported instead.
 - **Safety check:** it stops if the Scoro user and the Microsoft 365 account have different emails.
+- **Works with Scoro's own Outlook sync.** Copies made by Scoro's MS Exchange integration are matched and linked (project, activity type, billable) instead of duplicated. PMs with that sync on add "My Scoro Outlook sync is on." to their task prompt, so the task never creates events (v1.0.5).
 - Billability follows the project type, like `meeting-availability`: Internal → non-billable, One-off/Retainer → billable (v1.0.3).
 - Events the user organises count even without an explicit "accepted" response. Organisers usually have no response status.
 

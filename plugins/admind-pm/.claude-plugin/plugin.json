@@ -1,7 +1,7 @@
 {
   "name": "admind-pm",
   "displayName": "Admind PM",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Skills for Admind Project Managers: project intake, pre-call briefing, meeting availability, meeting notes to Scoro, client communications, and Outlook to Scoro calendar sync.",
   "author": { "name": "Admind Client Service" }
 }
