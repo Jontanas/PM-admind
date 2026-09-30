@@ -90,6 +90,7 @@ Because matching uses the ID, renaming an event in Outlook updates the Scoro eve
 2. If there is a high-confidence match, link the event to that project (and task, if one clearly matches) and pick the activity type:
    - matching task → the task's activity type
    - otherwise by project type: **Internal project work** for Internal projects; **Client meetings - billable** for One-off and Retainer projects
+   - set billable by project type too: `non_billable` for Internal projects, `billable` for One-off and Retainer projects
 3. If there is no confident match, **do not guess**. Create the event without a project link (so the time is still captured) and add it to the unresolved list. If Scoro refuses to create an event without a project, don't create it — just add it to the unresolved list.
 
 On UPDATE, never change a project link that is already set (the user may have fixed it by hand).

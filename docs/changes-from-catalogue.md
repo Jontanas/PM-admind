@@ -24,7 +24,7 @@ The skill instructions come from the *Admind AI Skills & Scheduled Tasks Catalog
 - Always includes the user. Resolves ambiguous names by asking.
 - Works within working hours (09:00–17:00, Mon–Fri) and never proposes past slots.
 - Tentative participants can be offered, clearly labelled. The original excluded them entirely while also asking to show "tentative" in the output, which was contradictory.
-- **Booking uses the Microsoft 365 connector only — never Outlook in a browser.** If the connector can't create events in this workspace, the skill gives a one-click Outlook link that opens a pre-filled new meeting. (v1.0.1, after pilot feedback: Claude was opening Outlook Web in the browser to book.)
+- **Booking creates the meeting in Scoro**, which syncs it to Outlook, so internal participants can log time on it and it shows in the Planner. Before creating, the PM confirms the **project** and **activity type** (suggested from the project type). Billability follows the project type: Internal → non-billable, One-off/Retainer → billable. External attendees are added in Outlook afterwards, since Scoro events only take Scoro users. Never books through a browser. (v1.0.3)
 
 ## meeting-actions
 
@@ -56,6 +56,7 @@ The skill instructions come from the *Admind AI Skills & Scheduled Tasks Catalog
 - **Replying to the DM works.** The original DM asked the PM to reply in Slack, but the scheduled run can't read replies. PMs now answer in Claude ("link my calendar events: 1 → …"), handled by the new RESOLVE mode.
 - **Never overwrites a project link set by hand, and never deletes events.** Events cancelled in Outlook are reported instead.
 - **Safety check:** it stops if the Scoro user and the Microsoft 365 account have different emails.
+- Billability follows the project type, like `meeting-availability`: Internal → non-billable, One-off/Retainer → billable (v1.0.3).
 - Events the user organises count even without an explicit "accepted" response. Organisers usually have no response status.
 
 ## Scoro → Slack notifications
