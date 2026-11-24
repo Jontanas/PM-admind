@@ -4,7 +4,7 @@ This repository packages the skills from the *Admind AI Skills & Scheduled Tasks
 
 - **One source of truth.** Improve a skill here, push, and every PM gets the new version. With copy and paste, every PM kept their own copy.
 - **Nothing to personalise.** Skills find the user's name, email and Scoro user ID from the connected accounts. There are no `[Your Full Name]` placeholders to replace.
-- **Scheduled tasks are one-liners.** The task prompt just calls the `calendar-sync` skill. The weekly and daily syncs share the same rules and can't drift apart.
+- **Confirm before write.** Skills that change Scoro (or draft mail) show a proposal first and wait for the PM in the Claude chat. Calendar sync is on demand — no scheduled runs, no Slack DMs.
 
 ## What's inside
 
@@ -12,11 +12,11 @@ This repository packages the skills from the *Admind AI Skills & Scheduled Tasks
 |---|---|---|---|
 | `project-intake` | A new client brief or pitch request lands | "Run project intake on this brief" + attach files | No — waits for "go" |
 | `pre-call-briefing` | About 30 min before a client call | "Prep me for my call with [client] about [project]" | Read-only |
-| `meeting-availability` | You need to propose meeting slots | "Find a time for me, Anna and Piotr next week" | Read-only, never sends invites |
+| `meeting-availability` | You need to propose meeting slots | "Find a time for me, Anna and Piotr next week" | Read-only until you ask to book |
 | `meeting-actions` | After a Teams meeting | "Post a summary of my last Teams call to Scoro" | No — waits for ✅ |
 | `client-comms-inbound` | A client email needs processing | "Process this client email for [project]" | No — waits for ✅ |
 | `client-comms-outbound` | An internal Scoro update must go to the client | "Turn this Scoro comment into a client email" | No — draft only |
-| `calendar-sync` | Outlook → Scoro calendar sync (runs on a schedule) | "Sync my calendar to Scoro" / "Link my calendar events" | Yes, in scheduled runs — asks via Slack DM when unsure |
+| `calendar-sync` | Outlook → Scoro calendar sync (on demand) | "Sync my calendar to Scoro" / "Sync this week's meetings" | No — proposes mapping, writes only after confirm |
 
 ## Repository layout
 
@@ -25,7 +25,7 @@ This repository packages the skills from the *Admind AI Skills & Scheduled Tasks
 plugins/admind-pm/
   .claude-plugin/plugin.json           # plugin manifest (bump "version" on every change)
   skills/<skill-name>/SKILL.md         # one folder per skill
-scheduled-tasks/                       # copy-paste prompts for the two calendar-sync tasks
+scheduled-tasks/                       # retired in v2.0.1 — see README there
 docs/
   admin-setup.md                       # one-time setup for the Claude workspace admin
   pm-quickstart.md                     # 5-minute setup for each PM

@@ -12,6 +12,7 @@ The skill instructions come from the *Admind AI Skills & Scheduled Tasks Catalog
 
 - The Scoro task assignee defaults to the current user, instead of asking every time.
 - The Drive folder is created with the `INTAKE` placeholder and **renamed with the real task code right after the Scoro task is created**. The original left the rename to the PM.
+- **Choosing the Drive location (v2.0.1).** Before asking where to create the folder, the skill searches client shared drive → client folder → division folder, then offers up to 3 candidates (recommended first). Never defaults to Creative Technology when a client drive exists.
 
 ## pre-call-briefing
 
@@ -24,13 +25,13 @@ The skill instructions come from the *Admind AI Skills & Scheduled Tasks Catalog
 - Always includes the user. Resolves ambiguous names by asking.
 - Works within working hours (09:00–17:00, Mon–Fri) and never proposes past slots.
 - Tentative participants can be offered, clearly labelled. The original excluded them entirely while also asking to show "tentative" in the output, which was contradictory.
-- **Booking: Outlook first, then Scoro.** The invite is sent from Outlook through the Microsoft 365 connector, with a Teams link and clients invited (Scoro can do neither). Then the meeting is linked in Scoro to the project, so internal participants can log time on it and it shows in the Planner. Before sending, the PM confirms **project** and **activity type** (suggested from the project type). Billability follows the project type: Internal → non-billable, One-off/Retainer → billable. For PMs with Scoro's own Outlook sync, the synced copy is updated instead of creating a duplicate. If the connector can't create the invite, a pre-filled Outlook link is the fallback. Never books through a browser. (v1.0.5, replacing the Scoro-first flow of v1.0.3)
+- **Booking: Outlook first, then Scoro.** The invite is sent from Outlook through the Microsoft 365 connector, with a Teams link and clients invited (Scoro can do neither). Then the meeting is linked in Scoro to the project, so internal participants can log time on it and it shows in the Planner. Before sending, the PM confirms **project** and **activity type** (suggested from the project type). Billability follows the project type: Internal → non-billable, One-off/Retainer → billable. For PMs with Scoro's own Outlook sync, the synced copy is updated instead of creating a duplicate. If the connector can't create the invite, a pre-filled Outlook link is the fallback. Never books through a browser.
 
 ## meeting-actions
 
-- **Works in the Claude app and in Slack.** The original was written for Slack threads only.
+- **Claude chat only (v2.0.1).** The whole workflow stays in the current Claude chat; it no longer posts to Slack.
 - "Latest meeting" means the latest meeting that has already ended.
-- Follow-up emails never include internal-only information or Google Drive links (v1.0.4).
+- Follow-up emails never include internal-only information or Google Drive links.
 
 ## client-comms-inbound
 
@@ -38,7 +39,7 @@ The skill instructions come from the *Admind AI Skills & Scheduled Tasks Catalog
 - Attachments go to `01_Client`, matching the `project-intake` folder structure.
 - Saving attachments also waits for confirmation.
 - The reply never commits to dates, budget or scope the team hasn't agreed.
-- Outlook drafts are created only through the Microsoft 365 connector, never in a browser (v1.0.1).
+- Outlook drafts are created only through the Microsoft 365 connector, never in a browser.
 
 ## client-comms-outbound
 
@@ -46,20 +47,21 @@ The skill instructions come from the *Admind AI Skills & Scheduled Tasks Catalog
 - Sensitive but client-relevant items (delays, extra cost) are flagged to the PM, not silently dropped.
 - Adds a standard structure: update → what we need from you → next steps.
 - Writes in the client's language.
-- **Finds Google Drive files linked in the Scoro update through the Google Drive connector** (file ID taken from the link), never by opening the link as a web page. The email's content still comes from the Scoro comment and the client thread; files are only read if the PM asks. (v1.0.2)
-- **Never sends or suggests Google Drive links to clients** — Admind's Drive is internal only. Drive files for the client are attached by the PM: the draft marks where each goes and lists them with their Drive links for the PM only. SharePoint links can be sent. Files too large to attach are shared via SharePoint. (v1.0.4)
+- **Finds Google Drive files linked in the Scoro update through the Google Drive connector** (file ID taken from the link), never by opening the link as a web page. The email's content still comes from the Scoro comment and the client thread; files are only read if the PM asks.
+- **Never sends or suggests Google Drive links to clients** — Admind's Drive is internal only. Drive files for the client are attached by the PM: the draft marks where each goes and lists them with their Drive links for the PM only. SharePoint links can be sent. Files too large to attach are shared via SharePoint.
 
-## calendar-sync (new — replaces the two sync prompts)
+## calendar-sync (v2.0.1 — on demand, confirm first)
 
-- **One skill, two modes.** The weekly and daily scheduled tasks both call it, so their rules can't drift apart. The catalogue had to warn: "if you change a rule in one, change it in the other".
-- **No duplicates when an event is renamed.** Matching was by title + day. Each Scoro event now stores the Outlook event ID as a marker line (`[outlook-id: …]`), and matching uses it. Events created by the old prompts are adopted through a title + day fallback.
-- **Unresolved events are still captured.** They are created without a project link, so the time isn't lost, and listed in the Slack DM.
-- **Replying to the DM works.** The original DM asked the PM to reply in Slack, but the scheduled run can't read replies. PMs now answer in Claude ("link my calendar events: 1 → …"), handled by the new RESOLVE mode.
-- **Never overwrites a project link set by hand, and never deletes events.** Events cancelled in Outlook are reported instead.
-- **Safety check:** it stops if the Scoro user and the Microsoft 365 account have different emails.
-- **Works with Scoro's own Outlook sync.** Copies made by Scoro's MS Exchange integration are matched and linked (project, activity type, billable) instead of duplicated. PMs with that sync on add "My Scoro Outlook sync is on." to their task prompt, so the task never creates events (v1.0.5).
-- Billability follows the project type, like `meeting-availability`: Internal → non-billable, One-off/Retainer → billable (v1.0.3).
-- Events the user organises count even without an explicit "accepted" response. Organisers usually have no response status.
+Replaces both the catalogue's weekly/daily sync prompts and the earlier plugin's unattended scheduled-task design.
+
+- **On demand only.** No scheduled runs, no Slack DMs. Proposal, questions, confirmation and report all happen in the Claude chat.
+- **Golden rule:** nothing is written to Scoro until the user confirms the proposal table.
+- **Ranges:** WEEK (Mon–Fri of the current week, including past days), DAY (today), or a specific date range the user names.
+- **Filters:** accepted/organizer, busy, Mon–Fri, overlapping 08:00–18:00, not all-day.
+- **Richer matching:** project pool + open tasks, fixed internal bucket projects (operations, Scrum, meetings, Trainings), task activity types, and billability from project type.
+- **No duplicates.** Each Scoro event stores `[outlook-id: …]`; title + day is the fallback for older entries and Scoro's own Outlook sync copies.
+- **Never overwrites a project link set by hand, and never deletes events.**
+- **Safety check:** stops if the Scoro user and the Microsoft 365 account have different emails.
 
 ## Scoro → Slack notifications
 
