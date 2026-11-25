@@ -104,7 +104,7 @@ Some PMs have Scoro's own Outlook calendar sync (MS Exchange integration) switch
 2. **Not found** → ask once: *"Is Scoro's Outlook calendar sync switched on for you? If you're not sure, say so."*
    - **Yes** → the copy may take a few minutes to appear. Say: *"I'll link it once it shows up in Scoro. Tell me 'link it' in a few minutes."* Then repeat step 4.1. If it still isn't there after a second check, offer to create it in Scoro instead.
    - **No** → **create** the event in Scoro with the Scoro connector: name, start and end, project ID, activity type ID, billable time type, the internal participants' Scoro user IDs, and a description ending with `[outlook-id: <Outlook event ID>]`.
-   - **Not sure** → don't create anything. Suggest they check the MS Exchange calendar integration in their Scoro settings. Until then, the next `calendar-sync` run will link the meeting.
+   - **Not sure** → don't create anything. Suggest they check the MS Exchange calendar integration in their Scoro settings. Until then, running `calendar-sync` ("sync my calendar to Scoro") will pick the meeting up and link it.
 
 Use the Outlook event's `iCalUId` as the Outlook event ID (or its `id` if `iCalUId` isn't available). The marker lets `calendar-sync` recognise the meeting later instead of copying it again.
 

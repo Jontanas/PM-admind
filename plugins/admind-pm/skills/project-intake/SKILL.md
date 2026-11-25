@@ -40,7 +40,7 @@ If critical information is missing (client name, project scope, deadlines), flag
 1. Parse all uploaded files and extract all relevant information.
 2. **Before generating any drafts, confirm with the PM:**
    - Which Scoro project the new Offer Prep Task should be created under
-   - Which Google Drive folder the new project folder should be created inside
+   - Which Google Drive folder the new project folder should be created inside — find candidates first with **"Choosing the Drive location"** (Deliverable 3), then let the PM pick
 3. Generate all 5 deliverable drafts in a single response for PM review.
 4. Present the confirmation prompt — do not act on Scoro or Google Drive until the PM approves.
 5. On approval, execute in this order:
@@ -115,6 +115,28 @@ When creating the task, use Scoro's create-task tool with the above field values
 Draft the folder hierarchy for PM review before creating anything.
 
 **Root folder location:** Always confirm with the PM which Google Drive folder the new project folder should be created inside before proceeding — do not assume or default to any location.
+
+### Choosing the Drive location
+
+Admind keeps one shared drive per client company (e.g. "CanPack", "Hexagon"), sometimes split by year or half-year (e.g. "ABB 2026", "ABB 2026 - H2", "ABB 2027 - H1"). Internal and division work lives in the "Admind" shared drive (e.g. "10_Creative Technology"). Search in this order and stop at the first step that finds candidates:
+
+1. **Client company shared drive** — list shared drives whose name contains the client company name (or its common short form, e.g. "ABB"). If it is split by period, prefer the one covering the project's start date; otherwise the most recent one.
+2. **Client folder by name** — search Drive folders whose title contains the client name or brand.
+3. **Division folder** — only if there's no client drive or folder (or the project is internal): search by the division named in the brief or by the PM (e.g. Creative Technology, 3D & Motion) inside the "Admind" shared drive.
+
+Then show the PM **up to 3 candidates**, each with its full path and link, the recommended one first:
+
+> *"Where should I create the project folder?*
+> *1. ABB 2026 - H2 (shared drive) — recommended: client drive covering the project dates*
+> *2. ABB 2027 - H1 (shared drive)*
+> *3. Admind › 10_Creative Technology*
+> *Reply with a number, or paste a link to a different folder."*
+
+Rules:
+- **Never default to Creative Technology** (or any division folder) when a client drive or folder exists — offer the client location first.
+- Never create the folder until the PM has picked a location or pasted a link.
+- If nothing is found, say so and ask the PM for a link.
+- If the PM can't add files in the chosen location (no write access), tell them and ask for another location.
 
 **Root folder name format:** `[Offer Prep Task Code]_[Client Company]_[Requestor Name]_[Project Name]`
 
@@ -220,6 +242,6 @@ Next step: share the Scoro task with department leads and schedule the alignment
 - **Tone:** Professional, authoritative, and operationally precise. No filler.
 - **No system actions without PM approval.** Scoro tasks, Drive folders, and comments are created only after explicit confirmation.
 - **Keep original file names.** Upload client-provided files to Drive as-is — do not rename them.
-- **Always confirm Drive location.** Never assume where to create the project folder — ask the PM every time.
+- **Always confirm Drive location.** Never assume where to create the project folder — search client drive → client folder → division (see "Choosing the Drive location"), offer up to 3 candidates and let the PM pick every time.
 - **Use supporting skills:** invoke the `docx` skill before generating the `.docx`, the `pdf` skill for reading PDF attachments, and the `pptx` skill for reading PowerPoint files.
 - **Match output to scope.** Don't pad small projects with sections, phases, or structure that adds no value.

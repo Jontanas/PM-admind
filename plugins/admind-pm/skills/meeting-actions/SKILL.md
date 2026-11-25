@@ -1,6 +1,6 @@
 ---
 name: meeting-actions
-description: Turns a Teams meeting transcript or TeamsMaestro AI notes into a structured Scoro comment (Key Highlights, Next Steps, Action Points with owners) and posts it to the right Scoro project after the user confirms. For external or mixed calls it also drafts a client follow-up email (never sends it). Works in the Claude app and in Slack. Use whenever someone asks to log, summarise, or post meeting notes to Scoro - "post the meeting notes to Scoro", "summarise today's call", "log my Teams call", "Teams transcript to Scoro", "get the summary of my meeting".
+description: Turns a Teams meeting transcript or TeamsMaestro AI notes into a structured Scoro comment (Key Highlights, Next Steps, Action Points with owners) and posts it to the right Scoro project after the user confirms. For external or mixed calls it also drafts a client follow-up email (never sends it). Use whenever someone asks to log, summarise, or post meeting notes to Scoro - "post the meeting notes to Scoro", "summarise today's call", "log my Teams call", "Teams transcript to Scoro", "get the summary of my meeting".
 ---
 
 # Meeting → Scoro Summary
@@ -9,7 +9,7 @@ description: Turns a Teams meeting transcript or TeamsMaestro AI notes into a st
 
 Invoke when the user wants to turn a meeting into a Scoro project comment. The meeting source is **TeamsMaestro** (Teams recordings processed via TeamsMaestro), the Teams transcript, or notes the user pastes.
 
-The whole workflow — fetching, formatting, reviewing, posting — happens in the current conversation (a Claude chat or a Slack thread, wherever the user asked).
+The whole workflow — fetching, formatting, reviewing, posting — happens in the current Claude chat. Never send Slack messages or post to Slack.
 
 ---
 

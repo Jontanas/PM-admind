@@ -13,7 +13,7 @@ Enable these for the organisation:
 | Microsoft 365 | From the connector directory | A Microsoft Entra (Azure AD) admin must grant tenant consent once. After that, each PM signs in with their own Admind account. |
 | Scoro | Custom connector, using the Scoro MCP server URL | Each PM signs in with their own Scoro account, so Claude only sees what that PM can see in Scoro. |
 | Google Drive | From the connector directory | |
-| Slack | From the connector directory | Needed by `pre-call-briefing`, `meeting-actions` and the `calendar-sync` DMs. |
+| Slack | From the connector directory | Used by `pre-call-briefing` (and optionally other skills). Calendar sync no longer sends Slack DMs. |
 
 **Microsoft 365 write actions.** `meeting-availability` sends meeting invites from Outlook (with a Teams link), and the client-comms skills create email drafts, so allow calendar and draft write actions in **Organization settings → Connectors → Microsoft 365 → Tool permission restrictions**. Your Entra admin must grant consent for the added permissions once (Enterprise applications → "M365 MCP Server for Claude" → Permissions → Grant admin consent), and each PM reconnects Microsoft 365. Without write actions, `meeting-availability` falls back to a pre-filled Outlook link.
 
@@ -29,7 +29,7 @@ In **Organization settings → Plugins & skills**:
 
 ## 3. Governance decisions to make once
 
-- **Automatic approval for scheduled tasks.** The calendar sync writes to Scoro without asking. The catalogue recommends automatic approval, because otherwise the task stops and waits. Confirm this is acceptable for Admind.
+- **Confirm-before-write.** Skills that change Scoro (calendar sync, meeting notes, intake, inbound) propose first and wait for the PM in chat. Keep that gate unless the team decides otherwise.
 - **Who can change the skills.** Protect the default branch and require a review. A merged change reaches every PM.
 - **Security, privacy and legal review** of the connectors. The original assessment listed these as out of scope.
 
